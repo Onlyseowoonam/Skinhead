@@ -594,21 +594,28 @@ footer {
 </body>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const section3Heading = document.querySelector('#section3 h2');
-
-    function checkSlideIn() {
-        const section3Position = section3Heading.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight;
-
-        if (section3Position < screenPosition) {
-            section3Heading.classList.add('slide-in');
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
         }
     }
 
-    window.addEventListener('scroll', checkSlideIn);
-    checkSlideIn(); // Initial check in case the element is already in view
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        const section3Heading = document.querySelector('#section3 h2');
+
+        function checkSlideIn() {
+            const section3Position = section3Heading.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight;
+
+            if (section3Position < screenPosition) {
+                section3Heading.classList.add('slide-in');
+            }
+        }
+
+        window.addEventListener('scroll', checkSlideIn);
+        checkSlideIn(); // Initial check in case the element is already in view
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
         // 섹션 7의 이미지 툴팁
@@ -671,53 +678,44 @@ footer {
             });
         });
 
-    // 모달 이미지 표시 함수
-    function displayImageInModal(imageUrl) {
-        const modal = document.createElement('div');
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.width = '100%';
-        modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        modal.style.display = 'flex';
-        modal.style.justifyContent = 'center';
-        modal.style.alignItems = 'center';
+        // 모달 이미지 표시 함수
+        function displayImageInModal(imageUrl) {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
 
-        const image = document.createElement('img');
-        image.src = imageUrl;
+            const image = document.createElement('img');
+            image.src = imageUrl;
 
-        image.onload = () => {
-            const maxHeight = window.innerHeight * 0.9;
-            const maxWidth = window.innerWidth * 0.9;
-            const aspectRatio = image.naturalWidth / image.naturalHeight;
+            image.onload = () => {
+                const maxHeight = window.innerHeight * 0.9;
+                const maxWidth = window.innerWidth * 0.9;
+                const aspectRatio = image.naturalWidth / image.naturalHeight;
 
-            if (aspectRatio > 1) {
-                image.style.width = maxWidth + 'px';
-                image.style.height = 'auto';
-            } else {
-                image.style.height = maxHeight + 'px';
-                image.style.width = 'auto';
-            }
-        };
+                if (aspectRatio > 1) {
+                    image.style.width = maxWidth + 'px';
+                    image.style.height = 'auto';
+                } else {
+                    image.style.height = maxHeight + 'px';
+                    image.style.width = 'auto';
+                }
+            };
 
-        modal.appendChild(image);
-        document.body.appendChild(modal);
+            modal.appendChild(image);
+            document.body.appendChild(modal);
 
-        modal.addEventListener('click', () => {
-            modal.remove();
-        });
-    }
-});
-
-        function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+            modal.addEventListener('click', () => {
+                modal.remove();
+            });
         }
-    }
-</script>
-
+    });
 </script>
 
 
