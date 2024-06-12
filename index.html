@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skinhead</title>
+    <style type="text/css">
+        /* CSS 코드는 여기에 작성합니다. */
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Black';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Black.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
+        }
+        @keyframes moveText {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .moving-text {
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
+    overflow: hidden; /* 넘치는 부분 숨김 */
+    animation: moveText 50s linear infinite; /* 애니메이션 적용 */
+    display: inline-block; /* 텍스트가 인라인 요소로 표시되도록 변경 */
+    width: max-content; /* 텍스트의 최대 너비로 설정 */
+}
+
+        @keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+#section3 h2 {
+    font-size: 5rem;
+    line-height: 0.8;
+    color: #d30707;
+    padding-bottom: 70px;
+    opacity: 0; /* 기본적으로 숨김 */
+    transform: translateX(-100%); /* 화면 밖에 위치 */
+    transition: transform 1s ease, opacity 1s ease; /* 부드러운 트랜지션 효과 */
+}
+
+        html {
+            font-family: 'Pretendard-Regular';
+            line-height: 1.5;
+        }
+
+        body, h1, h2, p {
+            margin: 0;
+        }
+
+        header, footer {
+            padding-top: 200px;
+        }
+footer {
+  bottom: 0; /* 화면 아래에 고정시킵니다. */
+  width: 100%; /* 화면 너비만큼 폭을 설정합니다. */
+  background-color: black; /* 푸터 배경색을 지정합니다. */
+  color: #fff; /* 푸터 텍스트 색상을 지정합니다. */
+  padding: 20px 0; /* 푸터 내부 여백을 지정합니다. */
+  text-align: center; /* 푸터 내부 텍스트를 가운데 정렬합니다. */
+};
+
+        body {
+            background-image: url('');
+            background-repeat: repeat-y;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        h1 {
+            padding-bottom: 70px;
+            font-family: 'Pretendard-Black';
+            font-weight: 900;
+            font-size: 3.5rem;
+        }
+
+        h2 {
+            font-family: 'Pretendard-Black';
+            font-weight: 900;
+            font-size: 2rem;
+        }
+
+        p {
+            padding-top: 70px;
+            font-size: 1.1rem;
+        }
+
+        .wrap {
+            width: 1000px;
+            margin: auto;
+        }
+
+        .half-size-img { /* 새로운 클래스 추가 */
+            width: 50%; /* 이미지 크기 반으로 조정 */
+            display: block;
+        }
+
+        img {
+            width: 100%;
+            display: block;
+        }
+
+        .left-spacing {
+            padding-left: 150px;
+        }
+
+        .right-spacing {
+            padding-right: 150px;
+        }
+
+        .center-spacing {
+            text-align: center;
+        }
+
+        .black {
+            background: black;
+        }
+
+        .black h2, .black p {
+            color: white;
+        }
+
+        .horizontal-line {
+  border-top: 1px solid #000; /* 선의 높이와 색상을 조정할 수 있습니다. */
+  width: 100%; /* 가로 폭을 조정할 수 있습니다. */
+}
+
+
+        /* 추가된 그리드 스타일 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+            align-items: center;
+            height: auto;
+        }
+
+        .grid-container.scrollable {
+            overflow-y: hidden; /* 스크롤 숨김 */
+            max-height: 500px; /* 최대 높이 지정 */
+        }
+
+        .scroll-content {
+            overflow-y: auto; /* 스크롤 적용 */
+            max-height: 500px; /* 최대 높이 지정 */
+        }
+
+        /* 추가된 스타일: 섹션 버튼 스타일 */
+        .section-button {
+            background-color: white;
+            border: none;
+            color: black;
+            padding: 2px;
+            text-align: center;
+            text-decoration: none;
+            display: block; /* 세로로 나열 */
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            font-family: 'Pretendard-Regular';
+        }
+
+        /* 추가된 스타일: 섹션 버튼 컨테이너 스타일 */
+        .section-buttons-container {
+            position: fixed;
+            top: 0;
+            right: 0; /* 우측 정렬 */
+            padding: 10px 0;
+            padding-right: 20px;
+            z-index: 999;
+            text-align: right;
+            display: flex; /* 버튼을 가로로 나열하기 위해 추가 */
+            flex-direction: column; /* 버튼을 세로로 나열하기 위해 추가 */
+            align-items: flex-end; /* 우측 정렬을 위해 추가 */
+        }
+        /* 추가된 스타일: 섹션 간격 */
+        section {
+            padding-top: 150px;
+            padding-bottom: 150px;
+            background-color: black;
+        }
+
+        #section1 {
+            background-color: black;
+            padding-top: 260px;
+            padding-bottom: 260px;
+         }
+
+        #section1 .grid-container {
+            background-color: #d30707;
+        }
+
+        #section1 h2{
+            padding-top: 50px;
+            padding-bottom: 50px;
+            font-family: 'Pretendard-Black';
+            font-weight: 900;
+            font-size: 3.5rem;
+            color: white;
+            text-align: center;
+         }
+        #section2 .grid-container.scrollable > div:nth-child(odd) {
+            background-color: white; /* 홀수 열 배경색 */
+        }
+
+        #section2 .grid-container.scrollable > div:nth-child(even) {
+            background-color: white; /* 짝수 열 배경색 */
+        }
+        #section2 .right-spacing {
+            padding-right: 40px;
+            align-self: start; /* 수정된 부분 */
+        }
+
+        #section2 {
+            background-image: url(13.check.png);
+        }
+
+        #section2 h2{
+            padding-top: 20px;
+            padding-left: 10px;
+        }
+
+        #section2 p{
+            padding-left: 10px;
+        }
+
+        #section3{
+            background-image: url(2nazi.png);
+            background-attachment: fixed;
+        }
+        #section3 .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+            align-items: start; /* 세로 정렬을 시작점에 배치 */
+            height: auto;
+        }
+
+        #section3 h2 {
+    font-size: 5rem;
+    line-height: 0.8;
+    color: #d30707;
+    padding-bottom: 70px;
+}
+
+        #section3 img {
+            padding-top: 100px;
+        }
+
+        #section3 img:hover {
+    transform: scale(1.2); /* 이미지를 1.1배 확대합니다. */
+    transition: transform 0.3s ease; /* 부드러운 트랜지션 효과를 추가합니다. */
+}
+
+        #section3 {
+            padding-bottom: 50px;
+        }
+
+        #section3 p {
+            padding-top: 0px;
+        }
+
+        #section4 {
+            padding: 0px;
+            background-color: #d30707;
+        }
+
+        #section4 p {
+            font-size: 7rem;
+            padding-top: 0px;
+        }
+
+        #section5 {
+            padding-bottom: 0px;
+            color: white;
+            background-color: black;
+        }
+
+        #section6 .align-self {
+            align-self: start; /* 수정된 부분 */
+        }
+
+        #section6 {
+            overflow-x: auto; /* 가로 스크롤 활성화 */
+            white-space: nowrap; /* 이미지들을 가로로 나란히 배치 */
+            color: white;
+            background-color: black;
+            padding-top: 0px;
+        }
+
+        #section6 img {
+            width: 250%; /* 이미지를 두 배로 확대 */
+            height: auto; /* 세로 비율 유지 */
+            padding-top: 70px;
+        }
+
+        #section7{
+            background-image: url(13.check.png);
+            background-attachment: fixed;
+        }
+
+        #section7 h2 {
+            padding-bottom: 70px;
+            text-align: center;
+            padding-top: 20px;
+            background-color: white;
+        }
+
+        #section7 p {
+            padding-top: 0px;
+
+        }
+
+        #section7 .grid-container {
+            display: grid;
+            grid-gap: 20px;
+            align-items: start; /* 세로 정렬을 시작점에 배치 */
+            height: auto;
+            background-color: white;
+            padding: 40px;
+        }
+
+        #section7 .grid-container h2 {
+            padding-bottom: 70px;
+            text-align: left;
+        }
+
+        #section8 {
+    padding: 150px;
+    background-color: #d30707;
+}
+
+#section8 h2 {
+    text-align: center;
+    padding-bottom: 50px;
+}
+
+#section8 .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 10px;
+}
+
+#section8 .grid-item {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+    transform: rotate(calc(var(--rotate) * 1deg));
+}
+
+#section8 .grid-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+#section8 p {
+    padding-top: 0px;
+    padding-bottom: 50px;
+    text-align: center;
+}
+/* 툴팁 스타일 추가 */
+#tooltip {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+
+        /* 추가된 스타일: 마우스 호버시 폰트 웨이트 변경 */
+        /* 추가된 스타일: 마우스 호버시 폰트 웨이트 변경 및 기호 추가 */
+        .section-button:hover {
+            font-family: 'Pretendard-Black';
+            color: #d30707;
+        }
+        .section-button::before {
+            content: "⚝ "; /* 기호 추가 */
+            opacity: 0; /* 기본적으로 기호는 숨김 */
+        }
+
+/* 추가된 스타일: 섹션 버튼 위로 마우스를 올렸을 때 기호가 보이도록 함 */
+        .section-button:hover::before {
+                opacity: 1; /* 마우스를 올렸을 때 기호를 보이게 함 */
+                color: #d30707;
+    </style>
+</head>
+<body>
+    <div class="section-buttons-container">
+        <!-- 섹션 버튼 -->
+        <button class="section-button" onclick="scrollToSection('section1')">TOP</button>
+        <button class="section-button" onclick="scrollToSection('section2')">ABOUT</button>
+        <button class="section-button" onclick="scrollToSection('section3')">MISUNDERSTANDING</button>
+        <button class="section-button" onclick="scrollToSection('section5')">TIMELINE</button>
+        <button class="section-button" onclick="scrollToSection('section7')">STYLE</button>
+        <button class="section-button" onclick="scrollToSection('section8')">GALLERY</button>
+    </div>
+
+    <section id="section1">
+        <div class="wrap">
+            <div class="grid-container">
+                <div class="right-spacing">
+                    <h2>SKINHEAD</h2>
+                </div>
+                <div>
+                    <img src="./1backview.gif"> <!-- 이미지에 새로운 클래스 추가 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="section2">
+        <div class="wrap">
+            <div class="grid-container scrollable">
+                <div class="scroll-content"> <!-- 스크롤 가능한 컨텐츠 -->
+                    <div class="right-spacing">
+                        <h2>WIKIPEDIA</h2>
+                        <p>✷ 스킨헤드(skinhead)는 1960년대 후반 영국에서 있었던 노동자 계급의 하위문화(Subculture)를 가리키는 말로 쓰이기 시작했다. 그들은 짧게 깎은 머리를 하거나 대머리를 해서 '머리가 짧은', '대머리의'라는 뜻의 스킨헤드가 이들을 지칭하는 말이 되었다. 이후 다른 나라로도 퍼졌다. 최초 스킨헤드는 서인도 제도, 특히 자메이카의 루드 보이(Rude boy) 문화와 영국의 모드(Mod) 문화로부터 패션, 음악, 라이프스타일 면에서 영향을 받았다. 초기 스킨헤드 하부문화는 정치, 인종 문제와 관련 없었다. 그러나 이후 정치 성향과 인종에 관한 태도가 스킨헤드 일부를 가르는 요소가 되었다. 이들은 정치에 무관심한 게 많지만, 스킨헤드 정치 성향은 좌익부터 극우까지 다양하며, 대개 정치색을 띠는 스킨헤드들은 극우에 속한다.
+                        <br><br><br>
+                        ✷ A skinhead or skin is a member of a subculture that originated among working-class youths in London, England, in the 1960s. It soon spread to other parts of the United Kingdom, with a second working-class skinhead movement emerging worldwide in the late 1970s. Motivated by social alienation and working-class solidarity, skinheads are defined by their close-cropped or shaven heads and working-class clothing such as Dr. Martens and steel toe work boots, braces, high rise and varying length straight-leg jeans, and button-down collar shirts, usually slim fitting in check or plain. The movement reached a peak at the end of the 1960s, experienced a revival in the 1980s, and, since then, has endured in multiple contexts worldwide.
+                        </p>
+                    </div>
+                </div>
+                <div class="scroll-content"> <!-- 스크롤 가능한 컨텐츠 -->
+                    <div class="right-spacing">
+                        <h2>THESIS</h2>
+                        <p>✷ 스킨헤드는 1960년대 후반 영국에 등장한 하위문화이며, 1967년 모드 스타일로부터 진화된 노동자 계급의 청소년 집단을 일컫는다. 스킨헤드 스타일은 버튼 다운 셔츠와 진, 면도한 머리와 로퍼로 구성되어있다.
+                        1964년 모드 집단은 둘로 갈라졌다. 대다수는 모드를 발전시켜 히피가 되었고, 나머지가 스킨헤드가 되었다. 하드 모드 혹은 갱(gang) 모드가 그 원류이다. 스킨헤드는 히피와 사회적 주변부화(marginalization)에 대한 노동계급의 반응이었다. 이들은 자신들의 지역적 영역방어, 고된 노동, 극단적 애국주의 등 전통적 보수적 가치들을 지지했다. 본질적으로 그들은 전통적인 노동계급 공동체를 주술적인 방식으로 회복하고자 했다. 이들은 스윙잉 런던과 사이키데릭들과 히피들에 반대하여 냉담함(coolness)과 무정함(hardness)을 강조했다. 하드 모드라 불리는 이들은 전형적인 노동계 급을 그 배경으로 하였기에, 공격적인 노동자 정체성을 채택하였다. 그들이 착용한 무거운 군화와 덩키(donkey) 재킷은 육체노동을 의미하는 것이었고, 이것이 스킨헤드의 전신이 되었다. 히피와 정반대의 것을 추구하였던 스킨헤드는 싸움과 육체적인 공격성, 폭력적인 것을 추구했다.
+                        <br><br><br>
+                        ✷ Skinhead is a subculture that emerged in England in the late 1960s, and refers to a group of working-class youth that evolved from the 1967 mod style. The skinhead style consists of a button-down shirt and gin, shaved hair and loafers. In 1964, the Mod group split in two. The majority developed the mod and became hippies, and the rest became skinheads. Hard mode or gang mode is the source. Skinhead was the working class's response to hippies and social marginalization. They supported traditional conservative values such as their local territorial defense, hard work, and extreme patriotism. In essence, they sought to restore the traditional working-class community in a shamanic way. They emphasized coolness and hardness against swinging London and psychederics and hippies. These, called hard modes, adopted an aggressive worker identity, set in the typical working class. The heavy military boots and donkey jackets they wore meant manual labor, and this became the predecessor of the skinhead. Skinhead, who pursued the opposite of the hippie, sought to fight, physical aggression, and violent.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="section3">
+    <div class="wrap">
+        <div class="grid-container">
+            <div>
+                <a href="https://youtu.be/8BSDZ1DIEIQ?si=_C-JozaHM8DyGByf">
+                    <img src="3.video.png" alt="Anti-Racist Skinheads Fighting Nazis: The Baldies | Full-Length Documentary">
+                </a>
+                <p>Click to watch video.</p>
+            </div>
+            <div>
+                <h2>스킨헤드는<br><br>인종차별주의와<br><br>관계없었다.</h2>
+                <p>당시 노동자들은 공장 기계에 머리카락이 끼지 않고 머리에 이가 생기지<br>않도록 하기 위해서 머리를 짧게 자르고 다녔으며, 힘든 노동을 견디기<br>위해 청바지를 입거나 군화를 신고 다녔다.<br><br>정치적인 색채가 나타기 시작한 것은 1970년대 들어서면서부터였다.<br>영국에는 인도나 파키스탄 지역의 저임금 노동자들이 대거 유입됐으며,<br>영국인들의 일자리는 점차 줄어들기 시작했다. 실직으로 고통받는<br>젊은이들 사이를 파고든 것이 네오나치즘이었다. 모든 책임이 외국인에<br>있다고 선동하기 시작한 이들은 노동자들에게 백인우월주의를<br>주입시켰으며, 일자리를 잃은 백인 노동자들은 자신들의 분노를<br>인종혐오주의에 실어 표출했다.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="section4">
+        <div class="moving-text">
+            <p>Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone Nazi-free Zone<p>
+        </div>
+    </section>
+
+<section id="section5">
+    <div class="wrap">
+        <h2>TIMELINE</h2>
+    </div> <!-- 닫히지 않은 div 추가 -->
+</section>
+
+<section id="section6">
+    <div class="wrap">
+        <div>
+            <img src="4timeline.png">
+        </div>
+    </div>
+</section>
+
+<section id="section7">
+    <div class="wrap">
+        <h2>STYLE</h2>
+        <div class="grid-container">
+            <div>
+                <img src="6.Jacket.png" data-hover="lons.gif" data-tooltip="Lonsdale Harrington jacket">
+            </div>
+            <div>
+                <h2>Lonsdale Harrington jacket</h2>
+                <p>스킨헤드는 남자답게 보이는 것을 중요하게 여겼는데, 그에 따른<br>아이템이 바로 최근 유행하는 항공 재킷이다. 지금이야 항공<br>재킷이라고 하면 자연스레 알파인더스트리(Alpha Industries)의<br>MA-1을 떠올리겠지만, 스킨헤드가 선호하는 브랜드는 따로<br>존재했다. 바로 영국의 오래된 복싱 기어 브랜드 론즈데일<br>(Lonsdale)의 항공 재킷으로 복싱 브랜드의 강한 이미지는<br>스킨헤드에게 안성맞춤이었다.</p>
+            </div>
+            <div class="horizontal-line"></div>
+            <div class="horizontal-line"></div>
+            <div>
+                <h2>1970s Vintage Lee Riders Denim</h2>
+                <p>스킨헤드가 선호하는 ‘노동자 룩’이란 무엇일까. 기름때에 찌든,<br>찢어진 청바지는 스킨헤드의 상징과도 같다. 다만, 지금처럼<br>인위적으로 가공된 워싱이 아닌 고된 노동으로 인해 자연스레 생긴<br>데미지와 오염이 그대로 묻어나는 바지. 그 삶을 극단적으로<br>보여주는 생활의 일면을 그대로 간직해야 한다. 스킨헤드는<br>리(Lee)와 랭글러(Wrangler) 사(社)의 청바지를 즐겨 입었고,<br>동시에 시장에서 유통되는 군용 전투복을 입거나, 긴 바지를<br>직접 자른 반바지를 입기도 했다.</p>
+            </div>
+            <div>
+                <img src="9.lee.png" data-hover="9.lee.gif" data-tooltip="1970s Vintage Lee Riders Denim">
+            </div>
+            <div class="horizontal-line"></div>
+            <div class="horizontal-line"></div>
+            <div>
+                <img src="8.dr1.png" data-hover="dr.gif" data-tooltip="Dr. Martens 1460">
+            </div>
+            <div>
+                <h2>Dr. Martens 1460</h2>
+                <p>누구나 아는 부츠 브랜드 닥터 마틴(Dr. Martens) 부츠는<br>스킨헤드의 전유물이었다. 높은 목의 부츠에 흰색 끈을 넣는 것이<br>일반적이었으며, 빨간색, 검은색 끈을 매고 다니기도 했다.<br>스킨헤드라서 닥터 마틴만을 착용하는 것은 아니었다. 닥터 마틴이<br>스킨헤드의 가장 대표적인 신발이었지만, 아디다스(Adidas)의<br>삼바 모델, 로퍼, 작업용 부츠로 유명한 몽키 부츠, 빈티지 볼링<br>신발도 즐겨 신었다고 하니 완전한 스테레오 타입은 아니었나<br>보다.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="section8">
+    <div class="wrap">
+        <h2>Gallery</h2>
+        <p>"Skinhead" by Nick Knight<br><br>Traces the history of this unique group from the original ‘60s Skinheads to its mid-’70s revival.<br>Features a piece by Dick Hebdige on the sociology of youth cults.</p>
+        <div class="grid-container">
+            <div class="grid-item" style="--rotate: 5;">
+                <img src="1.g.jpg" alt="Image 1">
+            </div>
+            <div class="grid-item" style="--rotate: -3;">
+                <img src="2.g.jpg" alt="Image 2">
+            </div>
+            <div class="grid-item" style="--rotate: 7;">
+                <img src="3.g.jpg" alt="Image 3">
+            </div>
+            <div class="grid-item" style="--rotate: -5;">
+                <img src="4.g.jpg" alt="Image 4">
+            </div>
+            <div class="grid-item" style="--rotate: 4;">
+                <img src="5.g.jpg" alt="Image 5">
+            </div>
+            <div class="grid-item" style="--rotate: 9;">
+                <img src="6.g.jpg" alt="Image 6">
+            </div>
+            <div class="grid-item" style="--rotate: -5;">
+                <img src="7.g.jpg" alt="Image 7">
+            </div>
+            <div class="grid-item" style="--rotate: 6;">
+                <img src="8.g.jpg" alt="Image 8">
+            </div>
+            <div class="grid-item" style="--rotate: -1;">
+                <img src="9.g.jpg" alt="Image 9">
+            </div>
+            <div class="grid-item" style="--rotate: 4;">
+                <img src="10.g.jpg" alt="Image 10">
+            </div>
+            <div class="grid-item" style="--rotate: -1;">
+                <img src="11.g.jpg" alt="Image 11">
+            </div>
+            <div class="grid-item" style="--rotate: 5;">
+                <img src="12.g.jpg" alt="Image 12">
+            </div>
+            <div class="grid-item" style="--rotate: 1;">
+                <img src="13.g.jpg" alt="Image 13">
+            </div>
+            <div class="grid-item" style="--rotate: 8;">
+                <img src="14.g.jpg" alt="Image 14">
+            </div>
+            <div class="grid-item" style="--rotate: 14;">
+                <img src="15.g.jpg" alt="Image 15">
+            </div>
+            <div class="grid-item" style="--rotate: -6;">
+                <img src="16.g.jpg" alt="Image 16">
+            </div>
+            <div class="grid-item" style="--rotate: 7;">
+                <img src="17.g.jpg" alt="Image 17">
+            </div>
+            <div class="grid-item" style="--rotate: -6;">
+                <img src="18.g.jpg" alt="Image 18">
+            </div>
+        </div>
+    </div>
+</section>
+
+  <footer>
+    <p>&copy; 2024 skinhead. All Rights Reserved.</p>
+  </footer>
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 섹션 7의 이미지 툴팁
+        const tooltip = document.createElement('div');
+        tooltip.id = 'tooltip';
+        tooltip.style.position = 'absolute';
+        tooltip.style.display = 'none';
+        tooltip.style.backgroundColor = '#333';
+        tooltip.style.color = '#fff';
+        tooltip.style.padding = '5px';
+        tooltip.style.borderRadius = '5px';
+        tooltip.style.pointerEvents = 'none';
+        document.body.appendChild(tooltip);
+
+        const section7Images = document.querySelectorAll('#section7 .grid-container img');
+
+        section7Images.forEach(image => {
+            const originalSrc = image.src;
+            const hoverSrc = image.getAttribute('data-hover');
+
+            image.addEventListener('mouseover', (event) => {
+                const description = image.getAttribute('data-tooltip');
+                tooltip.innerHTML = description;
+                tooltip.style.display = 'block';
+                tooltip.style.left = `${event.pageX + 10}px`;
+                tooltip.style.top = `${event.pageY + 10}px`;
+
+                image.src = hoverSrc; // 이미지 소스를 교체
+            });
+
+            image.addEventListener('mousemove', (event) => {
+                tooltip.style.left = `${event.pageX + 10}px`;
+                tooltip.style.top = `${event.pageY + 10}px`;
+            });
+
+            image.addEventListener('mouseout', () => {
+                tooltip.style.display = 'none';
+                image.src = originalSrc; // 이미지 소스를 원래대로 돌림
+            });
+        });
+
+        // 섹션 8의 그리드 아이템 호버 및 클릭 이벤트
+        const gridItemsSection8 = document.querySelectorAll('#section8 .grid-item');
+        let originalRotateValue;
+
+        gridItemsSection8.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                originalRotateValue = item.style.getPropertyValue('--rotate');
+                item.style.transform = `rotate(calc(0deg)) scale(1.5)`;
+                item.style.transition = 'transform 0.3s ease';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = `rotate(calc(${originalRotateValue} * 1deg))`;
+            });
+
+            item.addEventListener('click', () => {
+                const imageUrl = item.querySelector('img').getAttribute('src');
+                displayImageInModal(imageUrl);
+            });
+        });
+
+        // 스크롤 이벤트
+        window.addEventListener('scroll', function() {
+            var section3 = document.getElementById('section3');
+            var section3Position = section3.getBoundingClientRect().top;
+
+            if (section3Position < window.innerHeight) {
+                section3.classList.add('h2-scrolled');
+            } else {
+                section3.classList.remove('h2-scrolled');
+            }
+        });
+
+        // 모달 이미지 표시 함수
+        function displayImageInModal(imageUrl) {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+
+            const image = document.createElement('img');
+            image.src = imageUrl;
+
+            image.onload = () => {
+                const maxHeight = window.innerHeight * 0.9;
+                const maxWidth = window.innerWidth * 0.9;
+                const aspectRatio = image.naturalWidth / image.naturalHeight;
+
+                if (aspectRatio > 1) {
+                    image.style.width = maxWidth + 'px';
+                    image.style.height = 'auto';
+                } else {
+                    image.style.height = maxHeight + 'px';
+                    image.style.width = 'auto';
+                }
+            };
+
+            modal.appendChild(image);
+            document.body.appendChild(modal);
+
+            modal.addEventListener('click', () => {
+                modal.remove();
+            });
+        }
+    });
+</script>
+
+</script>
+
+
+</body>
+</html>
