@@ -25,14 +25,6 @@
             100% { transform: translateX(100%); }
         }
 
-        .moving-text {
-    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
-    overflow: hidden; /* 넘치는 부분 숨김 */
-    animation: moveText 50s linear infinite; /* 애니메이션 적용 */
-    display: inline-block; /* 텍스트가 인라인 요소로 표시되도록 변경 */
-    width: max-content; /* 텍스트의 최대 너비로 설정 */
-}
-
         @keyframes slideIn {
     from {
         transform: translateX(-100%);
@@ -49,9 +41,22 @@
     line-height: 0.8;
     color: #d30707;
     padding-bottom: 70px;
-    opacity: 0; /* 기본적으로 숨김 */
-    transform: translateX(-100%); /* 화면 밖에 위치 */
-    transition: transform 1s ease, opacity 1s ease; /* 부드러운 트랜지션 효과 */
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: transform 1s ease, opacity 1s ease;
+}
+
+#section3 h2.slide-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+        .moving-text {
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
+    overflow: hidden; /* 넘치는 부분 숨김 */
+    animation: moveText 50s linear infinite; /* 애니메이션 적용 */
+    display: inline-block; /* 텍스트가 인라인 요소로 표시되도록 변경 */
+    width: max-content; /* 텍스트의 최대 너비로 설정 */
 }
 
         html {
@@ -66,6 +71,7 @@
         header, footer {
             padding-top: 200px;
         }
+
 footer {
   bottom: 0; /* 화면 아래에 고정시킵니다. */
   width: 100%; /* 화면 너비만큼 폭을 설정합니다. */
@@ -250,13 +256,6 @@ footer {
             align-items: start; /* 세로 정렬을 시작점에 배치 */
             height: auto;
         }
-
-        #section3 h2 {
-    font-size: 5rem;
-    line-height: 0.8;
-    color: #d30707;
-    padding-bottom: 70px;
-}
 
         #section3 img {
             padding-top: 100px;
@@ -595,6 +594,22 @@ footer {
 </body>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const section3Heading = document.querySelector('#section3 h2');
+
+    function checkSlideIn() {
+        const section3Position = section3Heading.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight;
+
+        if (section3Position < screenPosition) {
+            section3Heading.classList.add('slide-in');
+        }
+    }
+
+    window.addEventListener('scroll', checkSlideIn);
+    checkSlideIn(); // Initial check in case the element is already in view
+});
+
     document.addEventListener('DOMContentLoaded', () => {
         // 섹션 7의 이미지 툴팁
         const tooltip = document.createElement('div');
@@ -656,56 +671,44 @@ footer {
             });
         });
 
-        // 스크롤 이벤트
-        window.addEventListener('scroll', function() {
-            var section3 = document.getElementById('section3');
-            var section3Position = section3.getBoundingClientRect().top;
+    // 모달 이미지 표시 함수
+    function displayImageInModal(imageUrl) {
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
 
-            if (section3Position < window.innerHeight) {
-                section3.classList.add('h2-scrolled');
+        const image = document.createElement('img');
+        image.src = imageUrl;
+
+        image.onload = () => {
+            const maxHeight = window.innerHeight * 0.9;
+            const maxWidth = window.innerWidth * 0.9;
+            const aspectRatio = image.naturalWidth / image.naturalHeight;
+
+            if (aspectRatio > 1) {
+                image.style.width = maxWidth + 'px';
+                image.style.height = 'auto';
             } else {
-                section3.classList.remove('h2-scrolled');
+                image.style.height = maxHeight + 'px';
+                image.style.width = 'auto';
             }
+        };
+
+        modal.appendChild(image);
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', () => {
+            modal.remove();
         });
-
-        // 모달 이미지 표시 함수
-        function displayImageInModal(imageUrl) {
-            const modal = document.createElement('div');
-            modal.style.position = 'fixed';
-            modal.style.top = '0';
-            modal.style.left = '0';
-            modal.style.width = '100%';
-            modal.style.height = '100%';
-            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            modal.style.display = 'flex';
-            modal.style.justifyContent = 'center';
-            modal.style.alignItems = 'center';
-
-            const image = document.createElement('img');
-            image.src = imageUrl;
-
-            image.onload = () => {
-                const maxHeight = window.innerHeight * 0.9;
-                const maxWidth = window.innerWidth * 0.9;
-                const aspectRatio = image.naturalWidth / image.naturalHeight;
-
-                if (aspectRatio > 1) {
-                    image.style.width = maxWidth + 'px';
-                    image.style.height = 'auto';
-                } else {
-                    image.style.height = maxHeight + 'px';
-                    image.style.width = 'auto';
-                }
-            };
-
-            modal.appendChild(image);
-            document.body.appendChild(modal);
-
-            modal.addEventListener('click', () => {
-                modal.remove();
-            });
-        }
-    });
+    }
+});
 </script>
 
 </script>
